@@ -1,7 +1,6 @@
 import SwiftUI
 
 var isLogined = UserDefaults.standard.bool(forKey: "KEY_LOGIN")
-//var currentUser = UserDefaults.standard.array(forKey: "KEY_CURRUSER") as? [[String:String]]
 
 struct LoginView: View {
     @State private var email:String = ""
@@ -11,8 +10,10 @@ struct LoginView: View {
     @State private var isSecure = false
     @State private var errMessage = ""
     @State private var gotoNextView = isLogined
-    @State private var linkselection : Int? = nil
+    @State private var linkselection : Int? = isLogined ? 1 : nil
+    @State private var isError = false
     
+    @EnvironmentObject var rid: RootId
     
     
     private func validation() -> Bool{
@@ -45,7 +46,7 @@ struct LoginView: View {
             
             ZStack{
                 
-                NavigationLink(destination: ActivityList(), isActive: self.$gotoNextView){}
+//                NavigationLink("Hello",destination: ActivityList(), isActive: self.$gotoNextView)
                 
                 NavigationLink(destination: ActivityList(), tag:1, selection: self.$linkselection){}
                 
@@ -55,12 +56,14 @@ struct LoginView: View {
                     .frame(minWidth: 0, maxWidth: .infinity)
                 
                 VStack(){
+
                     Text("Lion Tourism")
                         .font(.largeTitle)
                         .foregroundColor(Color.black)
                         .bold()
                         .padding([.top, .bottom], 80)
                         .shadow(radius: 10, x: 20, y: 10)
+                        .offset(y:-20)
                     Spacer().frame(height: 20)
                     VStack(alignment: .center, spacing: 15){
                         TextField("Email", text: self.$email)
@@ -100,12 +103,6 @@ struct LoginView: View {
                                     .tint(.gray)
                             }.padding(.leading, 220)
                         }
-    //                    SecureField("Password", text: self.$password)
-    //                        .padding()
-    //                        .background(Color.white)
-    //                        .cornerRadius(20)
-    //                        .opacity(0.7)
-    //                        .frame(width: 300, height: 50)
                         
                     }.padding(.bottom, 20)
                     Toggle(isOn: self.$isRemember){
@@ -126,7 +123,6 @@ struct LoginView: View {
                             }else{
                                 UserDefaults.standard.set(false, forKey: "KEY_LOGIN")
                                 UserDefaults.standard.set(["userEmail":"\(self.email)", "name":"\(self.name)"], forKey: "KEY_CURRUSER")
-//                                UserDefaults.standard.set(["\(self.name)":Data.shared.activities[0]], forKey: "KEY_DB")
                                 let dd:[String:Activity] = ["\(self.name)": DataDB.shared.activities[0]]
                                 do{
                                     let encodeAct = try JSONEncoder().encode(dd)
@@ -139,6 +135,7 @@ struct LoginView: View {
                             
                         }else{
                             print(errMessage)
+                            self.isError = true
                         }
                     }){
                         Text("Login")
@@ -148,6 +145,10 @@ struct LoginView: View {
                             .frame(width: 100, height: 30)
                             .background(.green)
                             .cornerRadius(15)
+                    }.alert(isPresented: self.$isError){
+                        Alert(title: Text("Error"), message: Text("\(self.errMessage)"), dismissButton: .default(Text("Try Again")){
+
+                        })
                     }
                     Spacer()
                     
@@ -155,21 +156,8 @@ struct LoginView: View {
                 
             }
             .navigationTitle(Text("Login"))
+            .navigationBarTitleDisplayMode(.inline)
             .background(.purple)
-            .toolbar{
-                Menu{
-                    Button{
-                        print("click logout")
-                        UserDefaults.standard.set(false, forKey: "KEY_LOGIN")
-                        UserDefaults.standard.removeObject(forKey: "KEY_CURRUSER")
-                    }label: {
-                        Text("Logout")
-                    }
-                }label: {
-                    Image(systemName:"gear")
-                        .foregroundColor(.white)
-                }
-            }
         }
         
     }

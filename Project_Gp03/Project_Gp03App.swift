@@ -8,10 +8,12 @@
 import SwiftUI
 
 @main
-struct Project_Gp03App: App {
+struct Project_G03App: App {
+    @ObservedObject var rid = RootId()
     var body: some Scene {
         WindowGroup {
-            ContentView()
+//            ContentView()
+            LoginView().environmentObject(rid).id(rid.rootId)
         }
     }
 }
