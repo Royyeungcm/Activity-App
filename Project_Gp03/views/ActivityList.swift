@@ -12,9 +12,7 @@ struct ActivityList: View {
             .navigationTitle(Text("Top Activities"))
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarBackButtonHidden(true)
-            .toolbar{
-                LogoutView(linkselection: self.$linkselection)
-            }
+            .toolbar{LogoutView(linkselection: self.$linkselection)}
     }
 //        Text("\(currentUser?["name"] ?? "Hello World")")
 //        Button(action:{
@@ -30,9 +28,6 @@ struct ActivityList: View {
 //        }){
 //            Text("click me")
 //        }
-
-        
-    
 }
 
 struct Activities_Previews: PreviewProvider {
