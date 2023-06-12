@@ -66,26 +66,33 @@ struct ActivityDetails: View {
     func favoriteButtonPressed(){
         // Step 2: Create an instance of Activity with user-chosen data
         let chosenActivity = activity
-
         // Step 3: Retrieve existing activities from UserDefaults
         if let savedActivitiesData = UserDefaults.standard.data(forKey: "FAVORITEOF\(userName)"),
            var savedActivities = try? JSONDecoder().decode([Activity].self, from: savedActivitiesData) {
-            // Step 4: Add the newly chosen activity to the array
-            savedActivities.append(chosenActivity)
             
-            // Step 5: Save the updated array back to UserDefaults
-            if let updatedActivitiesData = try? JSONEncoder().encode(savedActivities) {
-                UserDefaults.standard.set(updatedActivitiesData, forKey: "FAVORITEOF\(userName)")
+            // Check if the chosen activity already exists in the array
+            let activityExists = savedActivities.contains { savedActivity in
+                savedActivity.name == chosenActivity.name
             }
+            
+            if !activityExists {
+                // Step 4: Add the newly chosen activity to the array
+                savedActivities.append(chosenActivity)
+                
+                // Step 5: Save the updated array back to UserDefaults
+                if let updatedActivitiesData = try? JSONEncoder().encode(savedActivities) {
+                    UserDefaults.standard.set(updatedActivitiesData, forKey: "FAVORITEOF\(userName)")
+                }
+            }
+            print("saved: \(savedActivities)")
         } else {
             // No existing activities, create a new array and save to UserDefaults
             let initialActivities = [chosenActivity]
             if let initialActivitiesData = try? JSONEncoder().encode(initialActivities) {
                 UserDefaults.standard.set(initialActivitiesData, forKey: "FAVORITEOF\(userName)")
             }
+            print("initial: \(initialActivities)")
         }
-        
-
     }
     
     func callPhoneNumber() {
