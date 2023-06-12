@@ -20,6 +20,7 @@
 		18C8FF7C2A325571008F6D71 /* Project_Gp03App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C8FF7B2A325571008F6D71 /* Project_Gp03App.swift */; };
 		18C8FF802A325572008F6D71 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 18C8FF7F2A325572008F6D71 /* Assets.xcassets */; };
 		18C8FF832A325572008F6D71 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 18C8FF822A325572008F6D71 /* Preview Assets.xcassets */; };
+		18DC21DC2A36BB900009BA9D /* FavoriteList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18DC21DB2A36BB900009BA9D /* FavoriteList.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +57,7 @@
 		18C8FF822A325572008F6D71 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		18C8FF882A325572008F6D71 /* Project_Gp03Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Project_Gp03Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		18C8FF922A325572008F6D71 /* Project_Gp03UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Project_Gp03UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		18DC21DB2A36BB900009BA9D /* FavoriteList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteList.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,6 +93,7 @@
 				186035632A350912001FF438 /* ActivityDetails.swift */,
 				186035652A350931001FF438 /* ListView.swift */,
 				186035672A350954001FF438 /* LogoutView.swift */,
+				18DC21DB2A36BB900009BA9D /* FavoriteList.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -308,6 +311,7 @@
 				182F84ED2A32E96500428618 /* data.swift in Sources */,
 				182F84F52A32E9A200428618 /* activity.swift in Sources */,
 				186035662A350931001FF438 /* ListView.swift in Sources */,
+				18DC21DC2A36BB900009BA9D /* FavoriteList.swift in Sources */,
 				18C8FF7C2A325571008F6D71 /* Project_Gp03App.swift in Sources */,
 				186035642A350912001FF438 /* ActivityDetails.swift in Sources */,
 			);

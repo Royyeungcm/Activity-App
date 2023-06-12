@@ -3,6 +3,7 @@ import SwiftUI
 struct ActivityDetails: View {
     private var activity: Activity
     private var userName: String
+    
     var body: some View {
         VStack{
             Text("\(activity.name)")
@@ -25,20 +26,22 @@ struct ActivityDetails: View {
                 }
             }
             HStack{
-                Text("Contact: \n\(activity.contactNumber)")
+                Text("Contact:")
                     .padding()
+                Button(action: {callPhoneNumber()}){
+                    Text("\(activity.contactNumber)")
+                }
                 Spacer()
+                
             }
             Spacer()
             HStack{
-                Button(action: shareButtonPressed) {
+                ShareLink(item: "Activity name: \(activity.name)\nPrice: \(activity.price)"){
+                    Image(systemName: "square.and.arrow.up")
                     Text("SHARE")
-                        .padding()
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
-                        .frame(minWidth: 150)
+                    
                 }
+                
                 Button(action: favoriteButtonPressed) {
                     Text("FAVORITE")
                         .padding()
@@ -46,7 +49,7 @@ struct ActivityDetails: View {
                         .foregroundColor(.white)
                         .cornerRadius(10)
                         .frame(minWidth: 150)
-
+                    
                 }
                 
             }
@@ -57,14 +60,39 @@ struct ActivityDetails: View {
     init(activity: Activity, userName: String) {
         self.activity = activity
         self.userName = userName
-    }
-    
-    func shareButtonPressed(){
-        print("shared")
+        //        self.user = user
     }
     
     func favoriteButtonPressed(){
-        print("favoirted")
+        // Step 2: Create an instance of Activity with user-chosen data
+        let chosenActivity = activity
+
+        // Step 3: Retrieve existing activities from UserDefaults
+        if let savedActivitiesData = UserDefaults.standard.data(forKey: "FAVORITEOF\(userName)"),
+           var savedActivities = try? JSONDecoder().decode([Activity].self, from: savedActivitiesData) {
+            // Step 4: Add the newly chosen activity to the array
+            savedActivities.append(chosenActivity)
+            
+            // Step 5: Save the updated array back to UserDefaults
+            if let updatedActivitiesData = try? JSONEncoder().encode(savedActivities) {
+                UserDefaults.standard.set(updatedActivitiesData, forKey: "FAVORITEOF\(userName)")
+            }
+        } else {
+            // No existing activities, create a new array and save to UserDefaults
+            let initialActivities = [chosenActivity]
+            if let initialActivitiesData = try? JSONEncoder().encode(initialActivities) {
+                UserDefaults.standard.set(initialActivitiesData, forKey: "FAVORITEOF\(userName)")
+            }
+        }
+        
+
+    }
+    
+    func callPhoneNumber() {
+        guard let phoneNumberURL = URL(string: "tel://\(activity.contactNumber)"), UIApplication.shared.canOpenURL(phoneNumberURL)else{
+            return
+        }
+        UIApplication.shared.open(phoneNumberURL, options: [:], completionHandler: nil)
     }
     
 }
