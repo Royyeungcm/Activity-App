@@ -157,7 +157,7 @@ struct LoginView: View {
             }
             .navigationTitle(Text("Login"))
             .navigationBarTitleDisplayMode(.inline)
-            .background(.purple)
+            .background(.white)
         }
         
     }

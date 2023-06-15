@@ -6,19 +6,13 @@ struct ActivityDetails: View {
     @State private var msg = ""
     @State private var msgAlert = false
     @State private var linkselection: Int? = nil
+    @State private var isAddedToFavorite:Bool = false
     
     var body: some View {
         VStack{
             Text("\(activity.name)")
             Text("Price: $\(activity.price, specifier: "%.2f")/person")
-//            HStack{
-//                Image("\(activity.photo[0])")
-//                    .resizable()
-//                    .frame(width: 150,height: 150)
-//                Image("\(activity.photo[1])")
-//                    .resizable()
-//                    .frame(width: 150,height: 150)
-//            }
+
             
             ScrollView(.horizontal, showsIndicators: true){
                 LazyHStack{
@@ -53,6 +47,12 @@ struct ActivityDetails: View {
                 Spacer()
                 
             }
+            HStack{
+                Text("Host:")
+                    .padding()
+                Text("\(activity.host)")
+                Spacer()
+            }
             Spacer()
             HStack{
                 ShareLink(item: "Activity name: \(activity.name)\nPrice: \(activity.price)"){
@@ -70,6 +70,10 @@ struct ActivityDetails: View {
                         .cornerRadius(10)
                         .padding(.leading,20)
                     
+                }.alert(isPresented: self.$isAddedToFavorite){
+                    Alert(title: Text("Message"), message: Text("\(self.msg)"), dismissButton: .default(Text("OK")){
+                        self.msgAlert = false
+                    })
                 }
                 Button(action: purchaseButtonPressed) {
                     Text("Buy")
@@ -126,6 +130,8 @@ struct ActivityDetails: View {
             }
             print("initial: \(initialActivities)")
         }
+        msg = "Added to favorite list successfully."
+        isAddedToFavorite = true
     }
     
     func purchaseButtonPressed(){
