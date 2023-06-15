@@ -45,9 +45,6 @@ struct LoginView: View {
         NavigationView{
             
             ZStack{
-                
-//                NavigationLink("Hello",destination: ActivityList(), isActive: self.$gotoNextView)
-                
                 NavigationLink(destination: ActivityList(), tag:1, selection: self.$linkselection){}
                 
                 Image("lionrock-background")

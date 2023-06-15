@@ -23,20 +23,6 @@ struct ActivityList: View {
     func goToFavoriteList() {
         linkselection = 2
     }
-    
-    //        Text("\(currentUser?["name"] ?? "Hello World")")
-    //        Button(action:{
-    //            if let act = UserDefaults.standard.object(forKey: "KEY_DB") as? Data{
-    //                do{
-    //                    let sav = try JSONDecoder().decode([String:Activity].self, from: act)
-    //                    print(sav[(currentUser?["name"])!]!.host)
-    //                }catch{
-    //                    print("error")
-    //                }
-    //            }
-    //        }){
-    //            Text("click me")
-    //        }
 }
 struct Activities_Previews: PreviewProvider {
     static var previews: some View {

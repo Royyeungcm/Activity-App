@@ -157,9 +157,3 @@ struct ActivityDetails: View {
     }
     
 }
-
-//struct ActivityDetails_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ActivityDetails()
-//    }
-//}

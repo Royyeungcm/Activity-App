@@ -31,9 +31,3 @@ struct LogoutView: View {
         }
     }
 }
-
-//struct LogoutView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        LogoutView()
-//    }
-//}
