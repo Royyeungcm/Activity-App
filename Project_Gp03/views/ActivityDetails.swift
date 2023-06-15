@@ -3,19 +3,38 @@ import SwiftUI
 struct ActivityDetails: View {
     private var activity: Activity
     private var userName: String
+    @State private var msg = ""
+    @State private var msgAlert = false
+    @State private var linkselection: Int? = nil
     
     var body: some View {
         VStack{
             Text("\(activity.name)")
             Text("Price: $\(activity.price, specifier: "%.2f")/person")
-            HStack{
-                Image("\(activity.photo[0])")
-                    .resizable()
-                    .frame(width: 150,height: 150)
-                Image("\(activity.photo[1])")
-                    .resizable()
-                    .frame(width: 150,height: 150)
-            }
+//            HStack{
+//                Image("\(activity.photo[0])")
+//                    .resizable()
+//                    .frame(width: 150,height: 150)
+//                Image("\(activity.photo[1])")
+//                    .resizable()
+//                    .frame(width: 150,height: 150)
+//            }
+            
+            ScrollView(.horizontal, showsIndicators: true){
+                LazyHStack{
+                    ForEach(activity.photo, id: \.self){ photo in
+                        Image("\(photo)")
+                            .resizable()
+                            .frame(width: UIScreen.main.bounds.width - 20)
+                            .cornerRadius(10)
+                            .padding(5)
+                            .background(.blue)
+                            .cornerRadius(10)
+                            .padding(.leading, 5)
+                            
+                    }
+                }
+            }.frame(width: UIScreen.main.bounds.width, height: 260)
             
             Text("\(activity.description)")
                 .padding()
@@ -45,15 +64,29 @@ struct ActivityDetails: View {
                 Button(action: favoriteButtonPressed) {
                     Text("FAVORITE")
                         .padding()
+                        .frame(width: 110)
                         .background(Color.blue)
                         .foregroundColor(.white)
                         .cornerRadius(10)
-                        .frame(minWidth: 150)
+                        .padding(.leading,20)
                     
+                }
+                Button(action: purchaseButtonPressed) {
+                    Text("Buy")
+                        .padding()
+                        .frame(width: 110)
+                        .background(.red)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                    
+                }.alert(isPresented: self.$msgAlert){
+                    Alert(title: Text("Message"), message: Text("\(self.msg)"), dismissButton: .default(Text("OK")){
+                        self.msgAlert = false
+                    })
                 }
                 
             }
-            
+            .toolbar{LogoutView(linkselection: self.$linkselection)}
         }
     }
     
@@ -93,6 +126,21 @@ struct ActivityDetails: View {
             }
             print("initial: \(initialActivities)")
         }
+    }
+    
+    func purchaseButtonPressed(){
+        msg = "Purchase Success"
+        if let savedData = UserDefaults.standard.data(forKey: "FAVORITEOF\(userName)"),
+           var savedAct = try? JSONDecoder().decode([Activity].self, from: savedData){
+            if savedAct.contains(where: {$0.name == self.activity.name}){
+                savedAct.removeAll(where: {$0.name == self.activity.name})
+                print(savedAct.count)
+                if let updatedActivitiesData = try? JSONEncoder().encode(savedAct) {
+                    UserDefaults.standard.set(updatedActivitiesData, forKey: "FAVORITEOF\(userName)")
+                }
+            }
+        }
+        msgAlert = true
     }
     
     func callPhoneNumber() {

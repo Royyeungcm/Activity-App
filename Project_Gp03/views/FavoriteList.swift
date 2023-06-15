@@ -10,15 +10,20 @@ import SwiftUI
 struct FavoriteList: View {
     @State private var savedActivities: [Activity] = []
     private var currentUser = UserDefaults.standard.object(forKey: "KEY_CURRUSER") as? [String:String]
+    @State private var linkselection: Int? = nil
     
     var body: some View {
         
         List {
             ForEach(savedActivities, id: \.name) { activity in
-                VStack(alignment: .leading) {
+
+                NavigationLink{
+                    ActivityDetails(activity: activity, userName: currentUser?["name"] ?? "in case")
+                }label: {
                     Text(activity.name)
-                        .font(.title)
+                        .font(.title3)
                 }
+                
             }
             .onDelete(perform: deleteActivity)
             
@@ -29,7 +34,9 @@ struct FavoriteList: View {
         Button("Delete All"){
             deleteAllFavorite()
         }
-        
+        .navigationTitle(Text("Favourite List"))
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar{LogoutView(linkselection: self.$linkselection)}
     }
     
     

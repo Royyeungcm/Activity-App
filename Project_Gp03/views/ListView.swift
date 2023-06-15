@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ListActivity: View {
     private var currentUser = UserDefaults.standard.object(forKey: "KEY_CURRUSER") as? [String:String]
+    @State private var linkselection: Int? = nil
     var body: some View {
         let user = self.currentUser?["name"] ?? "in case"
         List(DataDB.shared.activities){ activity in
